@@ -1,11 +1,11 @@
-django>=1.6.2
+django==1.6.2
 psycopg2
 south
 django-polymorphic
 django-extensions
 django-sekizai
 django-reversion
-django-grappelli
+django-grappelli==2.5.2
 django-guardian
 djangorestframework
 django-cors-headers
