@@ -3,6 +3,8 @@ bin
 lib
 include
 explorer/data
+explorer/textbits
+explorer/dusp_explorer.db
 dist
 .tmp
 .Python
