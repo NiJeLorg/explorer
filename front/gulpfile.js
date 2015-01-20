@@ -2,8 +2,8 @@ var gulp        =  require('gulp'),
     gutil       =  require('gulp-util'),
     concat      =  require('gulp-concat'),
     less        =  require('gulp-less'),
-    jshint      = require('gulp-jshint'),
-    stylish     = require('jshint-stylish'),
+    jshint      =  require('gulp-jshint'),
+    stylish     =  require('jshint-stylish'),
     cssmin      =  require('gulp-minify-css'),
     htmlmin     =  require('gulp-minify-html'),
     uglify      =  require('gulp-uglify'),
@@ -41,6 +41,7 @@ var staticfiles = [
 		appstatic + 'data/*.js',
 		appstatic + 'fonts/*',
 		appstatic + 'favicon.ico',
+		appstatic + 'gifs/*.gif',
 	];
 
 gulp.task('lint', function() {

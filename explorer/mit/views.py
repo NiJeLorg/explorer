@@ -28,6 +28,7 @@ class JSONifier:
 R = JSONifier()
 
 # add jsons to context
+# for projects, only add to works to projects json if work_types = 6; Projects in the DB work_type ID = 6
 ctx = {
         'jsons': {
             'topics': R(TopicSerializer(Topic.objects.all(), many=True)),
@@ -38,6 +39,8 @@ ctx = {
             'models': R(ContentTypeSerializer(
                 ContentType.objects.filter(app_label='mit'), many=True)),
             'worktypes': R(WorkTypeSerializer(WorkType.objects.all(), many=True)),
+            'projects': R(GenericWorkSerializer(GenericWork.objects.filter(work_types__exact=6),
+                many=True)),
             }
         }
 

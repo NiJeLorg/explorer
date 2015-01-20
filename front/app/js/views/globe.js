@@ -44,13 +44,11 @@ drawGlobe: function(){
 
 initCanvas: function(){
 
-	var w = this.$el.width();
-	var h = this.$el.height();
+	var w = 1200;
+	var h = 600;
 	this.w = w;
 	this.h = h;
-	var innerRadius = Math.min(w, h) * 0.35;
-	var outerRadius = innerRadius * 1.05;
-
+	
     this.projection = d3.geo.orthographic()
         .scale(248)
         .clipAngle(90);
@@ -70,8 +68,8 @@ initCanvas: function(){
 		.attr('id', 'globe')
 		.classed('draggable', true);
 
-	this.context = this.canvas.node().getContext('2d');
-
+	this.context = this.canvas.node().getContext('2d');	
+	
 	var me = this;
 
 	this.drag = d3.behavior.drag()
@@ -102,6 +100,7 @@ initCanvas: function(){
 		var mouse = d3.mouse(me.canvas.node());
 		var lonlat = me.projection.invert(mouse);
 	});
+	
 },
 
 updateCountryColors: function(){
@@ -176,7 +175,7 @@ render: function(data){
 	this.drawGlobe();
 
 	this.renderCountryList();
-	this.initGUI();
+	
 },
 
 drawFill: function( color, pathItems){
@@ -199,8 +198,25 @@ drawStroke: function drawStroke( color, strokeWidth, pathItems ){
 selectCountry: function (d){
 	this.selectedCountry = d;
 	this.transitionToCountry(d);
-	this.displayCountryProjects(d);
+	//this.displayCountryProjects(d);
+	this.showCountryModal(d.id);
 },
+
+showCountryModal: function(index){
+	// remove all other country modals
+	$('.modal').modal('hide');
+	// show modal with country list and globe enable
+	var modalId = '#countryModal' + index;
+	$(modalId).modal({
+		backdrop: false,
+		keyboard: false
+	});
+	$(modalId).modal('show');
+	// ensure modal backdrop doesn't grey out the background
+	$('.modal-backdrop').removeClass("modal-backdrop");
+},
+
+// previous list of projects that display next to the country globe. No longer in use
 
 displayCountryProjects: function(d){
 	var me = this;
@@ -220,6 +236,7 @@ displayCountryProjects: function(d){
 		.classed('work', true);
 
 },
+
 
 linkCountries: function(){
 	var me = this;
@@ -265,6 +282,7 @@ tweenToPoint: function(point){
 },
 
 getCountryPoint: function(d){
+	console.log(d.feature); // undefined for the U.S. -- no geo features are getting packaged for U.S.
 	return d3.geo.centroid(d.feature);
 },
 

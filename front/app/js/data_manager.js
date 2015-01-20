@@ -5,6 +5,7 @@ var Works = require('./collections/works');
 var Facultys = require('./collections/facultys');
 var Topics = require('./collections/topics');
 var Locations = require('./collections/locations');
+var Projects = require('./collections/projects');
 
 var M = {};
 
@@ -12,7 +13,7 @@ var M = {};
 // each will be fetched, stored under it's key
 // and then relations will be built
 M.bases = [
-	WorkTypes, Works, Facultys, Topics, Locations
+	WorkTypes, Works, Facultys, Topics, Locations, Projects
 ];
 
 // This will store the instantiated collection objects
@@ -26,7 +27,7 @@ M.initializeCollections = function initializeCollections() {
 		var coll = new Coll();
 		M.collections.set( coll.key, coll );
 		coll.add(JSON_DATA[coll.key], {parse: true});
-		console.log("added", coll.key);
+		//console.log("added", coll.key);
 	});
 	// after all the collections are initialized, fetch their data
 	M.buildRelationGraph();
@@ -43,6 +44,7 @@ M.buildRelationGraph = function(){
 	// these might be processor intensive, and it might therefore be worth it
 	// to spin off web workers to help optimize this process.
 	M.collections.forEach(function (key, coll){
+		//console.log("building relations", key, coll);
 		coll.buildRelations(M.collections);
 	});
 	Events.trigger('relationsBuilt', M.collections);

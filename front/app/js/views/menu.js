@@ -31,6 +31,7 @@ var MenuView = BB.View.extend({
 	buildMenu: function(){
 		// this builds the individual items in the menu
 		var menuItems = this.options.menuItems;
+		
 		var me = this;
 		menuItems.forEach(function(item){
 			me.addMenuItem(item);

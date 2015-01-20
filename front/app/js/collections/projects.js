@@ -1,12 +1,12 @@
 var Related = require('../collections/related');
-var Work = require('../models/work');
+var Project = require('../models/project');
 
-var Works = Related.extend({
+var Projects = Related.extend({
 
-	menuName: 'List of Projects & Publications',
-	key: 'works',
+	menuName: 'Projects',
+	key: 'projects',
 	comparator: 'title',
-	model: Work,
+	model: Project,
 
 	parse:function( response ){
 		return response;
@@ -19,21 +19,23 @@ var Works = Related.extend({
 
 	defineRelations: function(){
 		// args: (           att_name,     targetCollection[, reverse_att_name] )
-		this.defineRelation( 'work_types', 'worktypes',       'works' );
-		this.defineRelation( 'subworks',   'works',           'parentworks' );
-		this.defineRelation( 'faculty',    'facultys',        'works' );
-		this.defineRelation( 'topics',     'topics',          'works' );
-		this.defineRelation( 'locations',  'locations',       'works' );
+		this.defineRelation( 'faculty',    'facultys',        'projects' );
+		this.defineRelation( 'topics',     'topics',          'projects' );
+		this.defineRelation( 'locations',  'locations',       'projects' );
 	},
+
 
 	graphData: function(){
 		var data = {};
 		// we need to assemble nodes and links
 		data.nodes = this.models;
 		data.links = [];
+		data.facultyNodes = [];
 		this.models.forEach(function(m){
-			var spans = m.getSpan('faculty', 'works');
-			spans.forEach(function(s){
+			var facultySpans = m.getSpan('faculty', 'projects');
+			facultySpans.forEach(function(s){
+				
+				console.log("s", s);
 				if( s.bridges.length > 1 ){
 					var link = {};
 					link.target = s.related_item;
@@ -47,4 +49,4 @@ var Works = Related.extend({
 	},
 
 });
-module.exports = Works;
+module.exports = Projects;
