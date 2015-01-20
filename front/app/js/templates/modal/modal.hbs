@@ -1,0 +1,112 @@
+<!--modal-->
+<div class="modal fade" id="modal{{id}}" role="dialog" aria-labelledby="objectModalLabel{{id}}" aria-hidden="true">
+	<div class="modal-dialog modal-85">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				{{#if attributes.full_name}}
+					<h4 class="modal-title" id="objectModalLabel{{id}}">{{attributes.full_name}}</h4>
+			    {{else}}
+					<h4 class="modal-title" id="objectModalLabel{{id}}">{{attributes.name}}</h4>
+			    {{/if}}
+			</div>
+			<div class="modal-body">
+				<div class="container modal-container-width">
+					{{#if attributes.full_name}}
+					<div class="row">
+						<div class="col-sm-8">
+							{{#if attributes.official_title}}
+							<h4>{{attributes.official_title}}</h4>
+							{{/if}}
+							{{#if attributes.bio}}
+								<p>{{attributes.bio}}</p>
+							{{/if}}
+						</div>
+						<div class="col-sm-4">
+							{{#if attributes.current_interests}}
+								<h4>Research Interests</h4>
+						        {{#each attributes.current_interests}}
+									<p class="modal-list-element"><strong>{{attributes.name}}</strong></p>
+						        {{/each}}
+								<br>
+							{{/if}}
+							<h4>Contact</h4>
+							<p class="modal-list-element">
+							{{#if attributes.home_page}}
+							    <a href="{{attributes.home_page}}" target="_blank">
+							      MIT website
+							    </a> | 
+							{{/if}}
+							{{#if attributes.email}}
+							    <a href="mailto:{{attributes.email}}" target="_blank">
+							      email
+							    </a>
+							{{/if}}
+							</p>
+						</div>
+					</div>
+					{{/if}}
+					
+					{{#if attributes.works}}
+						{{#listTitle attributes.works 'Projects'}}
+							<div class="row">
+								<div class="col-sm-12"><h4>Projects</h4></div>
+						        {{#each attributes.works}}
+									{{#listContent attributes ../attributes.full_name 'Projects'}}
+									{{/listContent}}
+						        {{/each}}
+							</div>							
+						{{else}}
+						{{/listTitle}}
+					
+						{{#listTitle attributes.works 'Journal Article'}}
+							<div class="row">
+								<div class="col-sm-12"><h4>Selected Journal Articles</h4></div>
+						        {{#each attributes.works}}
+									{{#listContent attributes ../attributes.full_name 'Journal Article'}}
+									{{/listContent}}
+						        {{/each}}
+							</div>						
+						{{else}}
+						{{/listTitle}}	
+						
+						{{#listTitle attributes.works 'Book'}}
+							<div class="row">
+								<div class="col-sm-12"><h4>Books</h4></div>
+						        {{#each attributes.works}}
+									{{#listContent attributes ../attributes.full_name 'Book'}}
+									{{/listContent}}
+						        {{/each}}
+							</div>						
+						{{else}}
+						{{/listTitle}}				
+
+						{{#listTitle attributes.works 'Article'}}
+							<div class="row">
+								<div class="col-sm-12"><h4>Other Selected Articles</h4></div>
+						        {{#each attributes.works}}
+									{{#listContent attributes ../attributes.full_name 'Article'}}
+									{{/listContent}}
+						        {{/each}}
+							</div>						
+						{{else}}
+						{{/listTitle}}					
+
+						{{#listTitle attributes.works 'Publication'}}
+							<div class="row">
+								<div class="col-sm-12"><h4>Other Selected Publications</h4></div>
+						        {{#each attributes.works}}
+									{{#listContent attributes ../attributes.full_name 'Publication'}}
+									{{/listContent}}
+						        {{/each}}
+							</div>						
+						{{else}}
+						{{/listTitle}}
+					
+					{{/if}}
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

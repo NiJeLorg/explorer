@@ -41,6 +41,9 @@ chord: function(){
 	var svg = div.selectAll('svg')
 		.data([{rotation:0, x: w / 2, y: h / 2}]).enter()
 		.append('svg')
+		.attr("preserveAspectRatio", "xMidYMid meet")
+		.attr("viewBox", "0 0 " + w + " " + h)
+		.attr('class', 'resize-chart')
 		.attr('width', w)
 		.attr('height', h)
 		.append('g')
@@ -71,13 +74,21 @@ chord: function(){
 	// Should I add links here?
 	this.groups = chordDiagram.selectAll('.group')
 		.data(layout.groups)
-		.enter().append('a')
+		.enter()
+		/*
+		.append('a')
 		.attr("xlink:href", function(d, i){
 			var node = data.nodes[i];
-			return node.get("home_page");
+			return node.get("id");
 		}).attr("target", "_blank")
 		.attr('class', 'group')
+		*/
 		.append('g')
+		.attr('class', 'group')
+		.on('click', function(d, i){
+			var node = data.nodes[i];
+			me.showModal(node.attributes.id); 
+		})
 		.on('mouseenter', function(d, i){ me.groupHover(d, i); })
 		.on('mouseleave',   function(d, i){ me.unhover(d, i); });
 
@@ -257,6 +268,11 @@ addHoverText: function (items){
 	// center the hover text vertically
 	this.hoverBox.attr('transform', 'translate(0,' + 
 				(items.length * -18 / 2) + ')');
+},
+
+showModal: function(index){
+	var modalId = '#modal' + index;
+	$(modalId).modal('show');
 },
 
 });

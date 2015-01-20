@@ -45,16 +45,19 @@ header {
 }
 
 .header-panel.info-button { font-weight:300; }
+.header-panel.feedback-button { font-weight:300; }
+
 
 #controls {
-    margin-left: @em * 21;
+    margin-left: @em * 27.5;
+    padding-top: @em / 7;
     height: @header_height;
 }
 .dropdown-menu {
     z-index: 99;
 }
 
-#info {
+#info, #feedback {
     display: none;
     .column-count(3, @em * 2);
     padding: @vu @em * 2;
@@ -68,7 +71,7 @@ header {
 }
 
 
-.info {
+.info, .feedback {
     .uppercase;
     font-size: @em - 2;
     margin-left: @em * 0.5;
@@ -78,6 +81,113 @@ header {
         color: @blue;
     }
 }
+
+/* Bootstrap modal overrides */
+
+.modal-85 {
+	width: 85%;
+}
+
+.modal-99 {
+	width: 99%;
+}
+
+.modal-background-accessible {
+	right: 0;
+	top: 0;
+	left: 65%;
+	overflow: visible;
+}
+
+.modal-container-width {
+	width: 100%;
+}
+
+.modal-dialog {
+	margin: 60px 0px 0px auto;
+}
+
+.modal-content {
+	border: 0px;
+	border-radius: 0px;
+}
+
+.modal-header {
+	background-color: @black;
+	color: @white;
+}
+
+.buffer {
+	margin-bottom: 10px;
+	clear: both;
+}
+
+.modal-list-element {
+	margin-bottom: 5px;
+	margin-left: 10px;
+}
+
+.modal-list-title {
+	margin: 2px 10px;
+	font-weight: 300;
+	font-size: 18px;
+}
+
+.modal-fine-print {
+	margin: 0px 10px;
+	color: @darkgray;
+	font-size: 12px;
+}
+
+.modal-list-first-element {
+	margin-bottom: 0px;
+	margin-left: 15px;
+}
+
+
+.close {
+	color: @white;
+	text-shadow: 0;
+	filter: alpha(opacity=100);
+	opacity: 1;
+}
+
+.close:hover,
+.close:focus {
+	color: @medgray;
+	filter: alpha(opacity=100);
+	opacity: 1;
+}
+
+/* D3 Hive plot CSS  */
+
+.axis {
+	stroke: @black;
+	stroke-width: 1.5px;
+}
+
+.link {
+	fill: none;
+}
+
+.link.active {
+	stroke: @mitorange;
+	stroke-width: 2px;
+	stroke-opacity: 1;
+}
+
+.node {
+	fill: @white;
+	stroke: @black;
+	stroke-width: 1.5px;
+}
+
+.node.active {
+	stroke: @mitorange;
+	stroke-width: 3px;
+}
+
+
 
 html, body, #main, #chart {
     height: 100%;
