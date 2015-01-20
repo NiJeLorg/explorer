@@ -7,7 +7,7 @@ django-sekizai
 django-reversion
 django-grappelli==2.5.2
 django-guardian
-djangorestframework
+djangorestframework==2.4.3
 django-cors-headers
 markdown
 markdown2
