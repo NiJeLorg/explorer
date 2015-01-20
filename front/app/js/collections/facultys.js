@@ -8,7 +8,7 @@ function lastName(m){
 
 var Facultys = Related.extend({
 	key: 'facultys',
-	menuName: 'faculty',
+	menuName: 'Faculty',
 	comparator: lastName,
 
 	initialize: function(){
@@ -58,7 +58,7 @@ graphData: function(){
 	var relationMatrix = [];
 	var sizeMatrix = [];
 	var me = this;
-	console.log("models", me.models);
+	console.log("models for faculty chart", me.models);
 	me.each(function(n, i){
 		// add a row
 		relationMatrix.push([]);

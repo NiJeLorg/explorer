@@ -29,9 +29,12 @@ var Related = BB.Collection.extend({
 	buildRelations: function(colls){
 		// relations are registered on each collection. They are used to
 		// replace foreign keys
+		//console.log("relations", colls, this.relations);
 		if( this.relations !== undefined ){
 			var me = this;
 			this.relations.forEach(function (att_name, rel){
+				//console.log("att_name", att_name);
+				//console.log("rel", rel);
 				// get related collection
 				var otherColl = colls.get( rel.targetCollectionName );
 				// add target collection to relationship object
@@ -63,6 +66,11 @@ var Related = BB.Collection.extend({
 		// keys. This function is called when and if there is a reverse
 		// relationship, and it ensures a symetrical reference using the
 		// correct attribute on the other object.
+		
+		//console.log("other", other);
+		//console.log("att", att);
+		//console.log("model", model);
+		
 		if( !other.has(att) ){
 			// if the other object doesn't have the attribute,
 			// then set it

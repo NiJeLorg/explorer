@@ -5,6 +5,7 @@ var JSON_DATA = {
 	facultys: {{ jsons.faculty }},
 	works: {{ jsons.works }},
 	models: {{ jsons.models }},
-	worktypes: {{ jsons.worktypes }}
+	worktypes: {{ jsons.worktypes }},
+	projects: {{ jsons.projects }}
 };
 {% endautoescape %}

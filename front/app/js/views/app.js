@@ -13,6 +13,8 @@ var AppView = BB.View.extend({
 		this.$el.find('#controls').append(this.queryView.$el);
 		this.$el.on('click', '.info-button', this.makeInfoToggler());
 		// add click callback to info button
+		this.$el.on('click', '.feedback-button', this.makeFeedbackToggler());
+
 	},
 
 
@@ -27,6 +29,29 @@ var AppView = BB.View.extend({
 		var panel = $("#info");
 		var states = { isOpen: false };
 		var p = d3.selectAll("#info p");
+		p.style("color", "#fff");
+		return function(e){
+			panel.slideToggle(300);
+			if( states.isOpen ){
+				console.log("goodbye", states);
+				p.transition()
+					.duration(500)
+					.style("color", "white");
+				states.isOpen = false;
+			} else {
+				console.log("hello", states);
+				p.transition()
+					.duration(1400)
+					.style("color", "black");
+				states.isOpen = true;
+			}
+		};
+	}, 
+	
+	makeFeedbackToggler: function(){
+		var panel = $("#feedback");
+		var states = { isOpen: false };
+		var p = d3.selectAll("#feedback p");
 		p.style("color", "#fff");
 		return function(e){
 			panel.slideToggle(300);
