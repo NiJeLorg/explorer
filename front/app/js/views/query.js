@@ -25,13 +25,14 @@ var QueryView = BB.View.extend({
 		Events.on('menuItemChosen', function(item, menu){
 			console.log("menu item", item);
 			me.handleMenuChoice(item, menu);
-		});
+		});		
 		this.chart = null;
 		this.menus = [];
 		this.initViews();
 		console.log("loading query");
 		Data.initializeCollections();
 		this.resizeListener();
+		this.feedbackForm();
 	},
 	
 	resizeListener: function(){
@@ -87,6 +88,13 @@ var QueryView = BB.View.extend({
 		}).chooseItem('Faculty');
 	},
 
+	feedbackForm: function(){
+		console.log("setting up the feedback form");
+		// hide honeypot
+		$('#Address').hide();
+
+	},
+
 	handleSelectedCollection: function(coll){
 		// remove any existing chart
 		console.log("handling choice", coll);
@@ -115,10 +123,10 @@ var QueryView = BB.View.extend({
 			} else if( coll.key == 'projects' ){
 				console.log("rendering project view with", coll.graphData());
 				this.renderProjectView(coll.graphData());
-				//this.renderModalView(coll);
-				//console.log("viewport listener initiated");
-				//this.resizeListener(coll.graphData());
-			}else {
+				this.renderModalView(coll.dataForModal());
+				console.log("viewport listener initiated");
+				this.resizeListener(coll.graphData());
+			} else {
 				console.log("rendering chord view with", coll.graphData());
 				this.renderChordView(coll.graphData());
 				this.renderModalView(coll);
@@ -213,13 +221,20 @@ var QueryView = BB.View.extend({
 	populateInfoPane: function(choice){
 		if (choice === 'Faculty') {
 			$('#onboarding-gif').html('<img src="/static/gifs/dusp-faculty-chord.gif" alt="Faculty Chord GIF" />');
-			$('#onboarding-text').html('<p><strong>DUSP EXPLORER</strong> is an online, interactive visualization of MIT’s Department of Urban Studies & Planning. Here you can find information about our current faculty, where we work, and how our projects intersect with each other and connect with the central themes of urban planning and design.<p><p>Using the drop-down menu at the top of the page, you can begin to explore our department using the following lenses:</p><p><strong>Faculty:</strong> By default, the circumference of the Explorer displays all of our nearly 30 full-time professors. Hover over a name and you can see the intellectual connections that link that person with others in the department. By moving the mouse closer into the circle, you can trace any one of these links and drop the others. You can also rotate the Explorer by clicking and holding the mouse and dragging the diagram around the circumference. Finally, you can see a detailed view of each faculty member and their projects, publications, and collaborations by clicking on the faculty member\'s name.</p>');
+			$('#onboarding-text').html('<p><strong>DUSP EXPLORER</strong> is an online, interactive visualization of MIT’s Department of Urban Studies & Planning. Here you can find information about our current faculty, where we work, and how our projects intersect with each other and connect with the central themes of urban planning and design.</p><p>Using the drop-down menu at the top of the page, you can begin to explore our department using the following lenses:</p><p><strong>Faculty:</strong> By default, the circumference of the Explorer displays all of our nearly 30 full-time professors. Hover over a name and you can see the intellectual connections that link that person with others in the department. By moving the mouse closer into the circle, you can trace any one of these links and drop the others. You can also rotate the Explorer by clicking and holding the mouse and dragging the diagram around the circumference. Finally, you can see a detailed view of each faculty member and their projects, publications, and collaborations by clicking on the faculty member\'s name.</p>');
 		} else if (choice === 'Topics') {
 			$('#onboarding-gif').html('<img src="/static/gifs/dusp-topic-chord.gif" alt="Topic Chord GIF" />');						
-			$('#onboarding-text').html('<p><strong>DUSP EXPLORER</strong> is an online, interactive visualization of MIT’s Department of Urban Studies & Planning. Here you can find information about our current faculty, where we work, and how our projects intersect with each other and connect with the central themes of urban planning and design.<p><p>Using the drop-down menu at the top of the page, you can begin to explore our department using the following lenses:</p><p><strong>Topics:</strong> “Themes” are displayed around the circumference, and the individual faculty become the “links” between them. Hover over a topic and the Explorer will highlight connections with other themes, displaying the names of the faculty working at the intersections in the center of the circle. Clicking on the topic name will also show you a detialed list of all projects, publications, and faculty working within this topic.</p>');
+			$('#onboarding-text').html('<p><strong>DUSP EXPLORER</strong> is an online, interactive visualization of MIT’s Department of Urban Studies & Planning. Here you can find information about our current faculty, where we work, and how our projects intersect with each other and connect with the central themes of urban planning and design.</p><p>Using the drop-down menu at the top of the page, you can begin to explore our department using the following lenses:</p><p><strong>Topics:</strong> “Themes” are displayed around the circumference, and the individual faculty become the “links” between them. Hover over a topic and the Explorer will highlight connections with other themes, displaying the names of the faculty working at the intersections in the center of the circle. Clicking on the topic name will also show you a detialed list of all projects, publications, and faculty working within this topic.</p>');
 		} else if (choice === 'Countries') {
 			$('#onboarding-gif').html('<img src="/static/gifs/dusp-globe.gif" alt="Globe GIF" />');			
-			$('#onboarding-text').html('<p><strong>DUSP EXPLORER</strong> is an online, interactive visualization of MIT’s Department of Urban Studies & Planning. Here you can find information about our current faculty, where we work, and how our projects intersect with each other and connect with the central themes of urban planning and design.<p><p>Using the drop-down menu at the top of the page, you can begin to explore our department using the following lenses:</p><p><strong>Countries:</strong> An interactive globe with project locations shown in blue. The globe can be rotated by dragging the mouse. When you click on the map or the country names at the left, the Explorer will display list of projects, publications, and faculty working in that country.</p>');			
+			$('#onboarding-text').html('<p><strong>DUSP EXPLORER</strong> is an online, interactive visualization of MIT’s Department of Urban Studies & Planning. Here you can find information about our current faculty, where we work, and how our projects intersect with each other and connect with the central themes of urban planning and design.</p><p>Using the drop-down menu at the top of the page, you can begin to explore our department using the following lenses:</p><p><strong>Countries:</strong> An interactive globe with project locations shown in blue. The globe can be rotated by dragging the mouse. When you click on the map or the country names at the left, the Explorer will display list of projects, publications, and faculty working in that country.</p>');			
+		} else if (choice === 'Projects') {
+			$('#onboarding-gif').html('<img src="/static/gifs/dusp-projects.gif" alt="Project GIF" />');			
+			$('#onboarding-text').html('<p><strong>DUSP EXPLORER</strong> is an online, interactive visualization of MIT’s Department of Urban Studies & Planning. Here you can find information about our current faculty, where we work, and how our projects intersect with each other and connect with the central themes of urban planning and design.</p><p>Using the drop-down menu at the top of the page, you can begin to explore our department using the following lenses:</p><p><strong>Projects:</strong> The projects view shows the linkages between projects, faculty, and topics. Hover over any project dot and see the links between that project and the faculty and topics involved. Hover over the faculty or topic dots to see which projects are associated.</p>');			
+		} else {
+			$('#onboarding-gif').html('');
+			$('#onboarding-text').html('<p><strong>DUSP EXPLORER</strong> is an online, interactive visualization of MIT’s Department of Urban Studies & Planning. Here you can find information about our current faculty, where we work, and how our projects intersect with each other and connect with the central themes of urban planning and design.</p>');			
+
 		}
 	},
 

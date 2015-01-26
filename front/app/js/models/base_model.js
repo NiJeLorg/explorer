@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _  = require('underscore');
 var d3 = require('d3');
 var BB = require('backbone');
 

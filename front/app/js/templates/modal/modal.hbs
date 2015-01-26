@@ -1,13 +1,17 @@
 <!--modal-->
-<div class="modal fade" id="modal{{id}}" role="dialog" aria-labelledby="objectModalLabel{{id}}" aria-hidden="true">
+<div class="modal fade" id="modal{{cid}}" role="dialog" aria-labelledby="objectModalLabel{{cid}}" aria-hidden="true">
 	<div class="modal-dialog modal-85">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				{{#if attributes.full_name}}
-					<h4 class="modal-title" id="objectModalLabel{{id}}">{{attributes.full_name}}</h4>
+					<h4 class="modal-title" id="objectModalLabel{{cid}}">{{attributes.full_name}}</h4>
 			    {{else}}
-					<h4 class="modal-title" id="objectModalLabel{{id}}">{{attributes.name}}</h4>
+			    	{{#if attributes.title}}
+						<h4 class="modal-title" id="objectModalLabel{{cid}}">{{attributes.title}}</h4>
+					{{else}}
+						<h4 class="modal-title" id="objectModalLabel{{cid}}">{{attributes.name}}</h4>
+					{{/if}}
 			    {{/if}}
 			</div>
 			<div class="modal-body">
@@ -102,6 +106,52 @@
 							</div>						
 						{{else}}
 						{{/listTitle}}
+
+					{{else}}
+						<div class="row">
+							{{#if attributes.description}}
+								<div class="col-sm-8">
+									<h4>Project Description</h4>
+									<p>{{attributes.description}}</p>
+								</div>						
+							{{else}}
+							{{/if}}
+
+							<div class="col-sm-4">
+								{{#if attributes.faculty}}
+									<h4>Faculty</h4>
+									<ul>
+							        {{#each attributes.faculty}}
+										{{#facultyListContent attributes}}
+										{{/facultyListContent}}
+							        {{/each}}
+							        </ul>
+								{{/if}}
+
+								{{#if attributes.topics}}
+									<h4>Topics</h4>
+									<ul>
+							        {{#each attributes.topics}}
+							        	<li>{{attributes.name}}</li>
+							        {{/each}}
+							        </ul>
+								{{/if}}
+
+								{{#if attributes.locations}}
+									<h4>Countries</h4>
+									<ul>
+							        {{#each attributes.locations}}
+							        	<li>{{attributes.name}}</li>
+							        {{/each}}
+							        </ul>
+								{{/if}}
+
+							</div>
+
+						</div>
+
+						
+
 					
 					{{/if}}
 					

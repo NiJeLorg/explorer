@@ -6242,13 +6242,9 @@ header {
 }
 #info,
 #feedback {
+  width: 100%;
   display: none;
-  -webkit-column-count: 3;
-  -moz-column-count: 3;
-  column-count: 3;
-  -webkit-column-gap: 28px;
-  -moz-column-gap: 28px;
-  column-gap: 28px;
+  /*.column-count(3, @em * 2);*/
   padding: 20px 28px;
   background-color: #ffffff;
   /*background-color: fade(@white, 90%);*/
@@ -6334,7 +6330,7 @@ header {
 /* D3 Hive plot CSS  */
 .axis {
   stroke: #000000;
-  stroke-width: 1.5px;
+  stroke-width: 1px;
 }
 .link {
   fill: none;
@@ -6342,16 +6338,31 @@ header {
 .link.active {
   stroke: #ff6600;
   stroke-width: 2px;
-  stroke-opacity: 1;
+  stroke-opacity: 0.5;
 }
 .node {
-  fill: #ffffff;
-  stroke: #000000;
-  stroke-width: 1.5px;
+  fill: #999999;
+  stroke: #999999;
+  stroke-width: 1px;
+}
+.node:hover {
+  cursor: pointer;
 }
 .node.active {
-  stroke: #ff6600;
-  stroke-width: 3px;
+  fill: #eeeeee;
+  stroke: #000000;
+}
+.node.activeMouseover {
+  fill: #000000;
+  stroke: #000000;
+}
+.hoverBigBold {
+  font-size: 18px;
+  font-weight: 600;
+}
+.hoverNormal {
+  font-size: 10.5px;
+  line-height: 1.0;
 }
 html,
 body,
