@@ -9,5 +9,6 @@ urlpatterns = patterns('',
     url(r'^api/', include('mit.urls')),
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^feedback/$', 'mit.views.ajax_form_submit', name='FeedbackForm'),
 )
 
