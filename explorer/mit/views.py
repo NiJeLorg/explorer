@@ -1,5 +1,8 @@
+from django.core.mail import send_mail
+from django.http import HttpResponse
 from mit.class_views import SimpleView
 from rest_framework.renderers import JSONRenderer
+import json
 
 from mit.serializers import (
         GenericWorkSerializer,
@@ -46,4 +49,34 @@ ctx = {
 
 
 home = SimpleView( 'DUSP Explorer', 'index.html', ctx )
+
+
+def ajax_form_submit(request):
+    """  
+    This view handles the feedback form submission. 
+    """
+    if request.is_ajax():
+        data = {}
+        name = request.POST.get('name', None)
+        email = request.POST.get('email', None)
+        address = request.POST.get('address', None)
+        comments = request.POST.get('comments', None)
+        if (name is None):
+            return HttpResponse(status=400)
+        if (email is None):
+            return HttpResponse(status=400)
+        if (comments is None):
+            return HttpResponse(status=400)
+
+        if not address: # if honeypot is empty, continue processing form
+            message = "Name: " + name + "\n\nEmail: " + email + "\n\nComments: " + comments
+            send_mail('DUSP Explorer Feedback Form Submitted', message, 'dusp.explorer@gmail.com', ['dusp.explorer@gmail.com'], fail_silently=False)        
+            data['success'] = "Thank you for submitting your feedback " + name + "!"
+        else:
+            data['error'] = "You are a robot!"
+        return HttpResponse(json.dumps(data), content_type="application/json")
+    else:
+        return HttpResponse(status=400)
+
+
 
