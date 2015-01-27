@@ -64,6 +64,8 @@ var QueryView = BB.View.extend({
 
 	handleMenuChoice: function(item, menu){
 		if ( menu === this.menus[0]){
+			//hide all modals
+			$('.modal').modal('hide');
 			console.log("a new collection was chosen", item.menuName);
 			this.handleSelectedCollection(item);
 			this.populateInfoPane(item.menuName);
@@ -114,6 +116,7 @@ var QueryView = BB.View.extend({
 			            // Send the token to same-origin, relative URLs only.
 			            // Send the token only if the method warrants CSRF protection
 			            // Using the CSRFToken value acquired earlier
+			            console.log(csrftoken);
 			            xhr.setRequestHeader("X-CSRFToken", csrftoken);
 			        }
 			    }
