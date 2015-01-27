@@ -116,7 +116,6 @@ var QueryView = BB.View.extend({
 			            // Send the token to same-origin, relative URLs only.
 			            // Send the token only if the method warrants CSRF protection
 			            // Using the CSRFToken value acquired earlier
-			            console.log(csrftoken);
 			            xhr.setRequestHeader("X-CSRFToken", csrftoken);
 			        }
 			    }
