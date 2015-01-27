@@ -213,7 +213,7 @@ showCountryModal: function(index){
 	});
 	$(modalId).modal('show');
 	// ensure modal backdrop doesn't grey out the background
-	$('.modal-backdrop').removeClass("modal-backdrop");
+	$('.modal-backdrop').remove();
 },
 
 // previous list of projects that display next to the country globe. No longer in use
