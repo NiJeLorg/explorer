@@ -64,6 +64,8 @@ var QueryView = BB.View.extend({
 
 	handleMenuChoice: function(item, menu){
 		if ( menu === this.menus[0]){
+			//hide all modals
+			$('.modal').modal('hide');
 			console.log("a new collection was chosen", item.menuName);
 			this.handleSelectedCollection(item);
 			this.populateInfoPane(item.menuName);
