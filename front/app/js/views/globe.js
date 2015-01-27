@@ -235,7 +235,6 @@ displayCountryProjects: function(d){
 			return workTemplate(d.attributes);
 		})
 		.classed('work', true);
-
 },
 
 
