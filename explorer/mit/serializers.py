@@ -76,6 +76,7 @@ class GenericWorkSerializer(ModelSerializer):
                 'subworks',
                 'publicationinfo',
                 'courseinfo',
+                'description',
             )
 
 

@@ -25,13 +25,14 @@ var QueryView = BB.View.extend({
 		Events.on('menuItemChosen', function(item, menu){
 			console.log("menu item", item);
 			me.handleMenuChoice(item, menu);
-		});
+		});		
 		this.chart = null;
 		this.menus = [];
 		this.initViews();
 		console.log("loading query");
 		Data.initializeCollections();
 		this.resizeListener();
+		this.feedbackForm();
 	},
 	
 	resizeListener: function(){
@@ -87,6 +88,98 @@ var QueryView = BB.View.extend({
 		}).chooseItem('Faculty');
 	},
 
+	feedbackForm: function(){
+		console.log("setting up the feedback form");
+		// hide honeypot
+		$('#Address').hide();
+
+		$('#feedback-form').on('submit', function(event){
+		    event.preventDefault();
+		    feedback_form_submit();
+		});
+
+		// AJAX for posting
+		function feedback_form_submit() {
+			var csrftoken = getCookie('csrftoken');
+
+		    var dataString = '&name=' + $('input[id=Name]').val() + 
+		    				 '&email=' + $('input[id=Email]').val() +
+		    				 '&address=' + $('input[id=Address]').val() +
+		    				 '&comments=' + $('textarea[id=Comments]').val() +
+
+			
+			$.ajaxSetup({
+			    beforeSend: function(xhr, settings) {
+			        if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+			            // Send the token to same-origin, relative URLs only.
+			            // Send the token only if the method warrants CSRF protection
+			            // Using the CSRFToken value acquired earlier
+			            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+			        }
+			    }
+			});
+
+
+			$.ajax({
+		        type: "POST",
+		        url: "/feedback/",
+		        data: dataString,
+		        success: function(data) {
+		        	// clear form
+		        	$('input[id=Name]').val('');
+		        	$('input[id=Email]').val('');
+		        	$('input[id=Address]').val('');
+		            $('textarea[id=Comments]').val('');
+		            // alert that form has been submitted
+		            if (data.success) {
+		        		alert(data.success);
+		        	} else {
+		        		alert(data.error);
+		        	}
+
+		        }   
+		     }); 
+		     return false;
+
+		}
+
+		// using jQuery
+		function getCookie(name) {
+		    var cookieValue = null;
+		    if (document.cookie && document.cookie !== '') {
+		        var cookies = document.cookie.split(';');
+		        for (var i = 0; i < cookies.length; i++) {
+		            var cookie = jQuery.trim(cookies[i]);
+		            // Does this cookie string begin with the name we want?
+		            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+		                break;
+		            }
+		        }
+		    }
+		    return cookieValue;
+		}
+
+		function csrfSafeMethod(method) {
+		    // these HTTP methods do not require CSRF protection
+		    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+		}
+		function sameOrigin(url) {
+		    // test that a given url is a same-origin URL
+		    // url could be relative or scheme relative or absolute
+		    var host = document.location.host; // host + port
+		    var protocol = document.location.protocol;
+		    var sr_origin = '//' + host;
+		    var origin = protocol + sr_origin;
+		    // Allow absolute or scheme relative URLs to same origin
+		    return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+		        (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+		        // or any other URL that isn't scheme relative or absolute i.e relative.
+		        !(/^(\/\/|http:|https:).*/.test(url));
+		}
+
+	},
+
 	handleSelectedCollection: function(coll){
 		// remove any existing chart
 		console.log("handling choice", coll);
@@ -115,10 +208,10 @@ var QueryView = BB.View.extend({
 			} else if( coll.key == 'projects' ){
 				console.log("rendering project view with", coll.graphData());
 				this.renderProjectView(coll.graphData());
-				//this.renderModalView(coll);
-				//console.log("viewport listener initiated");
-				//this.resizeListener(coll.graphData());
-			}else {
+				this.renderModalView(coll.dataForModal());
+				console.log("viewport listener initiated");
+				this.resizeListener(coll.graphData());
+			} else {
 				console.log("rendering chord view with", coll.graphData());
 				this.renderChordView(coll.graphData());
 				this.renderModalView(coll);
@@ -213,13 +306,20 @@ var QueryView = BB.View.extend({
 	populateInfoPane: function(choice){
 		if (choice === 'Faculty') {
 			$('#onboarding-gif').html('<img src="/static/gifs/dusp-faculty-chord.gif" alt="Faculty Chord GIF" />');
-			$('#onboarding-text').html('<p><strong>DUSP EXPLORER</strong> is an online, interactive visualization of MIT’s Department of Urban Studies & Planning. Here you can find information about our current faculty, where we work, and how our projects intersect with each other and connect with the central themes of urban planning and design.<p><p>Using the drop-down menu at the top of the page, you can begin to explore our department using the following lenses:</p><p><strong>Faculty:</strong> By default, the circumference of the Explorer displays all of our nearly 30 full-time professors. Hover over a name and you can see the intellectual connections that link that person with others in the department. By moving the mouse closer into the circle, you can trace any one of these links and drop the others. You can also rotate the Explorer by clicking and holding the mouse and dragging the diagram around the circumference. Finally, you can see a detailed view of each faculty member and their projects, publications, and collaborations by clicking on the faculty member\'s name.</p>');
+			$('#onboarding-text').html('<p><strong>DUSP EXPLORER</strong> is an online, interactive visualization of MIT’s Department of Urban Studies & Planning. Here you can find information about our current faculty, where we work, and how our projects intersect with each other and connect with the central themes of urban planning and design.</p><p>Using the drop-down menu at the top of the page, you can begin to explore our department using the following lenses:</p><p><strong>Faculty:</strong> By default, the circumference of the Explorer displays all of our nearly 30 full-time professors. Hover over a name and you can see the intellectual connections that link that person with others in the department. By moving the mouse closer into the circle, you can trace any one of these links and drop the others. You can also rotate the Explorer by clicking and holding the mouse and dragging the diagram around the circumference. Finally, you can see a detailed view of each faculty member and their projects, publications, and collaborations by clicking on the faculty member\'s name.</p>');
 		} else if (choice === 'Topics') {
 			$('#onboarding-gif').html('<img src="/static/gifs/dusp-topic-chord.gif" alt="Topic Chord GIF" />');						
-			$('#onboarding-text').html('<p><strong>DUSP EXPLORER</strong> is an online, interactive visualization of MIT’s Department of Urban Studies & Planning. Here you can find information about our current faculty, where we work, and how our projects intersect with each other and connect with the central themes of urban planning and design.<p><p>Using the drop-down menu at the top of the page, you can begin to explore our department using the following lenses:</p><p><strong>Topics:</strong> “Themes” are displayed around the circumference, and the individual faculty become the “links” between them. Hover over a topic and the Explorer will highlight connections with other themes, displaying the names of the faculty working at the intersections in the center of the circle. Clicking on the topic name will also show you a detialed list of all projects, publications, and faculty working within this topic.</p>');
+			$('#onboarding-text').html('<p><strong>DUSP EXPLORER</strong> is an online, interactive visualization of MIT’s Department of Urban Studies & Planning. Here you can find information about our current faculty, where we work, and how our projects intersect with each other and connect with the central themes of urban planning and design.</p><p>Using the drop-down menu at the top of the page, you can begin to explore our department using the following lenses:</p><p><strong>Topics:</strong> “Themes” are displayed around the circumference, and the individual faculty become the “links” between them. Hover over a topic and the Explorer will highlight connections with other themes, displaying the names of the faculty working at the intersections in the center of the circle. Clicking on the topic name will also show you a detialed list of all projects, publications, and faculty working within this topic.</p>');
 		} else if (choice === 'Countries') {
 			$('#onboarding-gif').html('<img src="/static/gifs/dusp-globe.gif" alt="Globe GIF" />');			
-			$('#onboarding-text').html('<p><strong>DUSP EXPLORER</strong> is an online, interactive visualization of MIT’s Department of Urban Studies & Planning. Here you can find information about our current faculty, where we work, and how our projects intersect with each other and connect with the central themes of urban planning and design.<p><p>Using the drop-down menu at the top of the page, you can begin to explore our department using the following lenses:</p><p><strong>Countries:</strong> An interactive globe with project locations shown in blue. The globe can be rotated by dragging the mouse. When you click on the map or the country names at the left, the Explorer will display list of projects, publications, and faculty working in that country.</p>');			
+			$('#onboarding-text').html('<p><strong>DUSP EXPLORER</strong> is an online, interactive visualization of MIT’s Department of Urban Studies & Planning. Here you can find information about our current faculty, where we work, and how our projects intersect with each other and connect with the central themes of urban planning and design.</p><p>Using the drop-down menu at the top of the page, you can begin to explore our department using the following lenses:</p><p><strong>Countries:</strong> An interactive globe with project locations shown in blue. The globe can be rotated by dragging the mouse. When you click on the map or the country names at the left, the Explorer will display list of projects, publications, and faculty working in that country.</p>');			
+		} else if (choice === 'Projects') {
+			$('#onboarding-gif').html('<img src="/static/gifs/dusp-projects.gif" alt="Project GIF" />');			
+			$('#onboarding-text').html('<p><strong>DUSP EXPLORER</strong> is an online, interactive visualization of MIT’s Department of Urban Studies & Planning. Here you can find information about our current faculty, where we work, and how our projects intersect with each other and connect with the central themes of urban planning and design.</p><p>Using the drop-down menu at the top of the page, you can begin to explore our department using the following lenses:</p><p><strong>Projects:</strong> The projects view shows the linkages between projects, faculty, and topics. Hover over any project dot and see the links between that project and the faculty and topics involved. Hover over the faculty or topic dots to see which projects are associated.</p>');			
+		} else {
+			$('#onboarding-gif').html('');
+			$('#onboarding-text').html('<p><strong>DUSP EXPLORER</strong> is an online, interactive visualization of MIT’s Department of Urban Studies & Planning. Here you can find information about our current faculty, where we work, and how our projects intersect with each other and connect with the central themes of urban planning and design.</p>');			
+
 		}
 	},
 

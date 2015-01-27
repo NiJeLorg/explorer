@@ -3,7 +3,6 @@ var BaseModel = require('../models/base_model');
 var Project = BaseModel.extend({
 
 displayKey: 'title',
-urlKey: 'website',
 
 initialize: function(){
 	BaseModel.prototype.initialize.apply(this, arguments);

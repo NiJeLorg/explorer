@@ -17,7 +17,7 @@ initialize: function(data){
 render: function(){	
 	var me = this;
 	this.div = d3.select(this.el);
-	
+
 	this.modalDivs = this.div.selectAll('.single-modal')
 		.data(this.data.models).enter()
 		.append('div').attr('class', 'single-modal')
@@ -170,8 +170,20 @@ registerHBHelpers: function(){
 		return output;
 		
 	});
-	
 
+	Handlebars.registerHelper('facultyListContent', function(attributes, options) {
+		var output = '';	
+
+		if (attributes.home_page !== '') {
+			output = output + '<li><a href="' + attributes.home_page + '">' + attributes.full_name + '</a></li>';
+		} else {
+			output = output + '<li>' + attributes.full_name + '</li>';
+		}
+						
+		return output;
+		
+	});
+	
 	
 },
 

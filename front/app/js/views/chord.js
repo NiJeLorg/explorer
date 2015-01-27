@@ -87,7 +87,7 @@ chord: function(){
 		.attr('class', 'group')
 		.on('click', function(d, i){
 			var node = data.nodes[i];
-			me.showModal(node.attributes.id); 
+			me.showModal(node.cid); 
 		})
 		.on('mouseenter', function(d, i){ me.groupHover(d, i); })
 		.on('mouseleave',   function(d, i){ me.unhover(d, i); });
@@ -272,6 +272,7 @@ addHoverText: function (items){
 
 showModal: function(index){
 	var modalId = '#modal' + index;
+	console.log(modalId);
 	$(modalId).modal('show');
 },
 
