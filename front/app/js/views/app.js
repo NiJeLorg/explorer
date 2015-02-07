@@ -12,8 +12,8 @@ var AppView = BB.View.extend({
 		this.queryView = new QueryView();
 		this.$el.find('#controls').append(this.queryView.$el);
 		this.$el.on('click', '.info-button', this.makeInfoToggler());
-		// add click callback to info button
 		this.$el.on('click', '.feedback-button', this.makeFeedbackToggler());
+		this.$el.on('click', this.closeOnHTMLClick());
 
 	},
 
@@ -26,11 +26,13 @@ var AppView = BB.View.extend({
 	},
 
 	makeInfoToggler: function(){
+		var html = $('html');
 		var panel = $("#info");
 		var states = { isOpen: false };
 		var p = d3.selectAll("#info p");
 		p.style("color", "#fff");
 		return function(e){
+			e.stopPropagation();
 			panel.slideToggle(300);
 			if( states.isOpen ){
 				console.log("goodbye", states);
@@ -45,6 +47,9 @@ var AppView = BB.View.extend({
 					.style("color", "black");
 				states.isOpen = true;
 			}
+			panel.click(function(event){
+			    event.stopPropagation();
+			});
 		};
 	}, 
 	
@@ -54,6 +59,7 @@ var AppView = BB.View.extend({
 		var p = d3.selectAll("#feedback p");
 		p.style("color", "#fff");
 		return function(e){
+			e.stopPropagation();
 			panel.slideToggle(300);
 			if( states.isOpen ){
 				console.log("goodbye", states);
@@ -68,8 +74,42 @@ var AppView = BB.View.extend({
 					.style("color", "black");
 				states.isOpen = true;
 			}
+			panel.click(function(event){
+			    event.stopPropagation();
+			});
+
 		};
 	},
+
+	closeOnHTMLClick: function(){
+		var infoPanel = $("#info");
+		var feedbackPanel = $("#feedback");
+		var infoStates = { isOpen: false };
+		var feedbackStates = { isOpen: false };
+		var pInfo = d3.selectAll("#info p");
+		var pFeedback = d3.selectAll("#feedback p");
+
+		return function(e){
+			console.log("click");
+			infoPanel.slideUp(300);
+			if( infoStates.isOpen ){
+				console.log("goodbye", infoStates);
+				pInfo.transition()
+					.duration(500)
+					.style("color", "white");
+				infoStates.isOpen = false;
+			} 
+			feedbackPanel.slideUp(300);
+			if( feedbackStates.isOpen ){
+				console.log("goodbye", feedbackStates);
+				pFeedback.transition()
+					.duration(500)
+					.style("color", "white");
+				feedbackStates.isOpen = false;
+			}
+		};
+
+	}
 
 });
 

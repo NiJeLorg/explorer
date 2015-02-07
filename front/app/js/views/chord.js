@@ -79,7 +79,7 @@ chord: function(){
 		.append('a')
 		.attr("xlink:href", function(d, i){
 			var node = data.nodes[i];
-			return node.get("id");
+			return node.get("home_page");
 		}).attr("target", "_blank")
 		.attr('class', 'group')
 		*/
@@ -87,7 +87,13 @@ chord: function(){
 		.attr('class', 'group')
 		.on('click', function(d, i){
 			var node = data.nodes[i];
-			me.showModal(node.cid); 
+			if (data.relationKey == 'current_interests') {				
+				var url = node.get("home_page");
+		        $(location).attr('href', url);
+		        window.location = url;
+			} else {
+				me.showModal(node.cid); 				
+			}
 		})
 		.on('mouseenter', function(d, i){ me.groupHover(d, i); })
 		.on('mouseleave',   function(d, i){ me.unhover(d, i); });
