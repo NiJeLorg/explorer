@@ -22,9 +22,9 @@ hive: function(){
 	var links = this.data.links;
 	var nodes = this.data.nodes;
 
-	var maxFacultyPad = this.data.max[0].maxFaculty;
-	var maxProjectsPad = this.data.max[0].maxProjects;
-	var maxTopicsPad = this.data.max[0].maxTopics;
+	var maxFacultyPad = this.data.max[0].maxFaculty + 0.5;
+	var maxProjectsPad = this.data.max[0].maxProjects + 1.2;
+	var maxTopicsPad = this.data.max[0].maxTopics + 1;
 
 	var horizontal = d3.scale.ordinal().domain(d3.range(3)).rangePoints([-(w / 3.5), (w / 3.5)]),
 		facultyVertical = d3.scale.linear().domain([0, maxFacultyPad]).range([-(h / 2.5), (h / 3)]);
@@ -35,7 +35,7 @@ hive: function(){
 	var line = d3.svg.line()
 		.x(function(d) { return d.x; })
 		.y(function(d) { return d.y; })
-		.interpolate(function(points) { return points.join("A 500,500 0 0 0 "); });
+		.interpolate(function(points) { return points.join("A 782,782 0 0 0 "); });
 	
 
 	// create array of x,y pairs for source and target links
@@ -70,6 +70,15 @@ hive: function(){
 		.append('g')
 		.attr('class', 'svg-chart')
 		.attr('transform', 'translate('+halfw+','+halfh+')' );
+
+	// create a clickable box under the nodes and links that will clear any mouseover interaction stuff
+	svg.append('rect')
+		.attr('width', w)
+		.attr('height', h)
+		.attr('transform', 'translate(-'+halfw+',-'+halfh+')' )
+		.attr("class", "rect")
+		.on("click", mouseout);
+
 
 	svg.selectAll(".axis")
 	    .data(axisObj)
@@ -111,18 +120,18 @@ hive: function(){
 	    .text(function(d) { 
 	    	return d.axis;
 		});
-	
+
 	svg.selectAll(".link")
 	    .data(pairs)
 	  .enter().append("path")
-	    .attr("class", "link")
+	    .attr("class", "link active")
 		.attr("d", line);
 	
 	svg.selectAll(".node")
 	    .data(nodes)
 	  .enter().append("circle")
 	    .attr("class", "node")
-	    .attr("id", function(d) { 
+	    .attr("id", function(d) {
 	    	return d.cid;
 	    })
 	    .attr("cy", function(d) { 
@@ -136,27 +145,195 @@ hive: function(){
 	    })
 	    .attr("cx", function(d) { return horizontal(d.attributes.x); })
 	    .attr("r", 3)
+	    // links to faculty webpages, modals for all other objects
 	    .on('click', function(d, i){
-	    	console.log(d);			
-			me.showModal(d.cid); 
+	    	if (d.attributes.flag == 'faculty') {
+				var url = d.attributes.home_page;
+		        $(location).attr('href', url);
+		        window.location = url;
+			} else {
+				me.showModal(d.cid); 				
+			}
+			
 		})
-  	  	.on("mouseover", nodeMouseover)
-        .on("mouseout", mouseout);
+  	  	.on("mouseover", nodeMouseover);
+        //.on("mouseout", mouseout);
+
+
+	// text initial parameters
+	var wrapWidthProjects = w / 4;
+	var wrapWidthFacTopics = w / 6;
+	var horiCenterProject = 12;
+	var horiCenterFacTopic = 6;
+
+	// height set to crop title to one line
+	var chopTitleHeight = 700;
+	var chopTitleLengthProject = parseInt(w / 30);
+	var chopTitleLengthTopic = parseInt(w / 40);
+
+
+
+	svg.selectAll(".textNames")
+	    .data(nodes)
+	  .enter().append('foreignObject')
+		.attr("class", "textNames")
+	  	.attr("requiredFeatures", "http://www.w3.org/TR/SVG11/feature#Extensibility")
+	    .attr("id", function(d) {
+	    	return d.cid;
+	    })
+	    .attr("y", function(d) { 
+	    	if (d.attributes.flag == 'faculty') {
+	    		return facultyVertical(d.attributes.y) - horiCenterFacTopic;
+	    	} else if (d.attributes.flag == 'topic') {
+	    		return topicVertical(d.attributes.y) - horiCenterFacTopic;
+	    	} else {
+	    	}
+	    })
+	    .attr("x", function(d) { 
+	    	if (d.attributes.flag == 'faculty') {
+	    		return horizontal(d.attributes.x) - (15 + wrapWidthFacTopics);
+	    	} else if (d.attributes.flag == 'topic') {
+	    		return horizontal(d.attributes.x) + 15;
+	    	} else {
+	    	}
+	    })
+        .attr('width', wrapWidthFacTopics)
+        .attr('height', 100)
+        .append('xhtml:div')
+        .append('p')
+        .attr("class", function(d) {
+        	if (d.attributes.flag == 'faculty') {
+        		return 'text-right hoverNormal';
+        	} else {
+        		return 'hoverNormal';
+        	}
+        })
+	    .html(function(d) {
+	    	var textName, len, curr, prev, input, output;
+	    	if (d.attributes.flag == 'faculty') {
+	    		textName = d.attributes.full_name;
+	    	} else if (d.attributes.flag == 'topic') {
+	    		textName = d.attributes.name;
+	    		if (h < chopTitleHeight && textName.length >= chopTitleLengthTopic) {
+					len = chopTitleLengthTopic;
+					curr = len; 
+					prev = 0;
+					input = textName;
+					output = [];
+					while(input[curr]) {
+					  if(input[curr++] == ' ') {
+						output.push(input.substring(prev,curr));
+						prev = curr;
+						curr += len;
+					  }
+					}
+					output.push(input.substr(prev));
+					textName = output[0] + '...';								
+				} 
+	    	} else {
+	    		textName = '';
+	    	}
+
+	    	return textName;
+
+
+		})
+	    // links to faculty webpages, modals for all other objects
+	    .on('click', function(d, i){
+	    	if (d.attributes.flag == 'faculty') {
+				var url = d.attributes.home_page;
+		        $(location).attr('href', url);
+		        window.location = url;
+			} else {
+				me.showModal(d.cid); 				
+			}
+			
+		});
+
+
+
 
     // Highlight the node and connected links on mouseover.
     function nodeMouseover(d) {
-    	//console.log(d);
-		svg.selectAll(".link").classed("active", function(p) { 
-			if (d.attributes.flag == 'faculty') {
-				targetVert = facultyVertical(d.attributes.y);
-			} else if (d.attributes.flag == 'project') {
-				targetVert = projectVertical(d.attributes.y);
-			} else {
-				targetVert = topicVertical(d.attributes.y);
+    	// hide faculty and topic text
+    	$(".textNames").hide();
+
+    	// remove all other items from other mouse overs
+    	svg.selectAll(".active").classed("active", false);
+		svg.selectAll(".activeMouseover").classed("activeMouseover", false);
+		svg.selectAll(".node").attr("r", 3);
+		svg.selectAll(".hoverTextProjectsRight").remove();
+		svg.selectAll(".hoverTextProjectsLeft").remove();
+		svg.selectAll(".hoverTextFaculty").remove();
+		svg.selectAll(".hoverTextTopics").remove();
+
+		// bulid related nodes to class links and nodes as active
+		var relatedNodes = [];
+		// add node moused over
+		relatedNodes.push(d);
+
+		// get first order relations
+		$.each(links, function( i, j ) {
+			if ((j.source.attributes.x === d.attributes.x && j.source.attributes.y === d.attributes.y) || (j.target.attributes.x === d.attributes.x && j.target.attributes.y === d.attributes.y)) {
+				if (j.source.attributes.x === d.attributes.x && j.source.attributes.y === d.attributes.y) {
+					relatedNodes.push(j.target);
+				} else if (j.target.attributes.x === d.attributes.x && j.target.attributes.y === d.attributes.y) {
+					relatedNodes.push(j.source);
+				}
 			}
-			var check = {x: horizontal(d.attributes.x), y: targetVert};
-			return (p[0].x === check.x && p[0].y === check.y) || (p[1].x === check.x && p[1].y === check.y); 
 		});
+
+		// if moused over d is a faculty node or a topic node, get second order relations
+		if (d.attributes.flag == 'faculty') {
+			// get topic relations to related nodes
+			$.each(relatedNodes, function( g, h ) {
+				$.each(links, function( i, j ) {
+					if ((j.source.attributes.x === h.attributes.x && j.source.attributes.y === h.attributes.y) && j.target.attributes.flag == 'topic') {
+						relatedNodes.push(j.target);
+					}
+				});
+			});
+		} else if (d.attributes.flag == 'topic') {
+			// get faculty relations to related nodes
+			$.each(relatedNodes, function( g, h ) {
+				$.each(links, function( i, j ) {
+					if ((j.source.attributes.x === h.attributes.x && j.source.attributes.y === h.attributes.y) && j.target.attributes.flag == 'faculty') {
+						relatedNodes.push(j.target);
+					}
+				});
+			});
+		}
+
+		// create unique relatedNodes
+		relatedNodes = _.uniq(relatedNodes, function(n){
+			return n.cid;
+		});
+
+		svg.selectAll(".link").classed("active", function(p) { 
+			var nodeCount = 0;
+			$.each(relatedNodes, function( i, j ) {
+				if (j.attributes.flag == 'faculty') {
+					targetVert = facultyVertical(j.attributes.y);
+				} else if (j.attributes.flag == 'project') {
+					targetVert = projectVertical(j.attributes.y);
+				} else {
+					targetVert = topicVertical(j.attributes.y);
+				}
+				var check = {x: horizontal(j.attributes.x), y: targetVert};
+				if ((p[0].x === check.x && p[0].y === check.y) || (p[1].x === check.x && p[1].y === check.y)) {
+					nodeCount++;	
+				} 
+			});
+
+			if (nodeCount > 1) {
+				return true;
+			} else {
+				return false;
+			}
+
+		});
+
+
 
 		// hover text collectors
 		var hoverTextProjectsRight = [];
@@ -164,134 +341,90 @@ hive: function(){
 		var hoverTextFaculty = [];
 		var hoverTextTopics = [];
 
-		// width of box for wrapping
-		var wrapWidthProjects = w / 4;
-		var wrapWidthFacTopics = w / 6;
-		var horiCenterProject;
-		var horiCenterFacTopic;
 
-		// height set to crop title to one line
-		var chopTitleHeight = 700;
-		var chopTitleLengthProject = parseInt(w / 30);
-		var chopTitleLengthTopic = parseInt(w / 40);
+		console.log(relatedNodes);
 
-		// iterate through linkages and find those that are related to d; set those to active
-		$.each(links, function( i, j ) {
-			if ((j.source.attributes.x === d.attributes.x && j.source.attributes.y === d.attributes.y) || (j.target.attributes.x === d.attributes.x && j.target.attributes.y === d.attributes.y)) {
-				// set class active for selected sources and targets
-				var sourceSelector = "#" + j.source.cid;
-				svg.select(sourceSelector).classed("active", true).attr("r", 8);
-				var targetSelector = "#" + j.target.cid;
-				svg.select(targetSelector).classed("active", true).attr("r", 8);
+		// set related nodes to active and display text amking sure that the active moused over node is big and bold
+		$.each(relatedNodes, function( i, j ) {
+			// set each node to active class and r = 8
+			var selector = "#" + j.cid;
 
-				// mark as moused over
-				var moSource;
-				var moTarget;
-				var chopSource;
-				var chopTarget;
+			// is this the moused over node?
+			var mo, chop;
+			if (j == d) {
+				mo = true;
+				chop = false;
+				svg.select(selector).classed("activeMouseover", true).attr("r", 10);
+				horiCenterProject = 16;
+				horiCenterFacTopic = 12;
+			} else {
+				mo = false;
+				chop = true;
+				svg.select(selector).classed("active", true).attr("r", 8);
+				horiCenterProject = 6;
+				horiCenterFacTopic = 6;
+			}
 
-				if ((j.source.attributes.x === d.attributes.x && j.source.attributes.y === d.attributes.y)) {
-					moSource = true;
-					horiCenterProject = 12;
-					chopSource = false;
+			// set text postion, size and chop text for selected nodes
+			var hori, vert, text;
+			var len, curr, prev, input, output, printName, chopTitleLength;
+
+			if (j.attributes.flag == 'faculty') {
+				printName = j.attributes.full_name;
+				chopTitleLength = chopTitleLengthTopic;
+			} else if (j.attributes.flag == 'project') {
+				printName = j.attributes.title;
+				chopTitleLength = chopTitleLengthProject;
+			} else {
+				printName = j.attributes.name;
+				chopTitleLength = chopTitleLengthTopic;
+			}
+
+			if (typeof printName !== "undefined") {
+				// if the window height is too small, then keep project titles to one line
+				if (h < chopTitleHeight && printName.length >= chopTitleLength && chop === true) {
+					len = chopTitleLength;
+					curr = len; 
+					prev = 0;
+					input = printName;
+					output = [];
+					while(input[curr]) {
+					  if(input[curr++] == ' ') {
+						output.push(input.substring(prev,curr));
+						prev = curr;
+						curr += len;
+					  }
+					}
+					output.push(input.substr(prev));
+					printName = output[0] + '...';								
+				} 
+				if (j.attributes.flag == 'project') {
+					vert = projectVertical(j.attributes.y) - horiCenterProject;
+					text = printName;
+					if ((j.attributes.y % 2) == 1) {
+						hori = horizontal(j.attributes.x) + 15;
+						hoverTextProjectsRight.push({id: j.cid, text: text, hori: hori, vert: vert, mo: mo});
+					} else {
+						hori = horizontal(j.attributes.x) - (15 + wrapWidthProjects);
+						hoverTextProjectsLeft.push({id: j.cid, text: text, hori: hori, vert: vert, mo: mo});
+					}
+					 
+				} else if (j.attributes.flag == 'faculty') {
+					hori = horizontal(j.attributes.x) - (15 + wrapWidthFacTopics);
+					vert = facultyVertical(j.attributes.y) - horiCenterFacTopic;
+					text = printName;
+					hoverTextFaculty.push({id: j.cid, text: text, hori: hori, vert: vert, mo: mo});
 				} else {
-					moSource = false;
-					horiCenterProject = 6;
-					chopSource = true;
+					hori = horizontal(j.attributes.x) + 15;
+					vert = topicVertical(j.attributes.y) - horiCenterFacTopic;
+					text = printName;
+					hoverTextTopics.push({id: j.cid, text: text, hori: hori, vert: vert, mo: mo}); 
 				}
-
-				if ((j.target.attributes.x === d.attributes.x && j.target.attributes.y === d.attributes.y)) {
-					moTarget = true;
-					horiCenterFacTopic = 12;
-					chopTarget = false;
-				} else {
-					moTarget = false;
-					horiCenterFacTopic = 6;
-					chopTarget = true;
-				}
-
-				// write out text for selected nodes
-				var hori, vert, text;
-				var len, curr, prev, input, output, sourceName, targetName;
-
-				sourceName = j.source.attributes.title;
-				if (typeof sourceName !== "undefined") {
-					// if the window height is too small, then keep project titles to one line
-					if (h < chopTitleHeight && sourceName.length >= chopTitleLengthProject && chopSource === true) {
-						len = chopTitleLengthProject;
-						curr = len; 
-						prev = 0;
-						input = sourceName;
-						output = [];
-						while(input[curr]) {
-						  if(input[curr++] == ' ') {
-							output.push(input.substring(prev,curr));
-							prev = curr;
-							curr += len;
-						  }
-						}
-						output.push(input.substr(prev));
-						sourceName = output[0] + '...';								
-					} 
-				}
-
-				if (j.target.attributes.flag == 'faculty') {
-					targetName = j.target.attributes.full_name;
-				} else {
-					targetName = j.target.attributes.name;
-				}
-
-				if (typeof targetName !== "undefined" && j.target.attributes.flag == 'topic') {
-					if (h < chopTitleHeight && targetName.length >= chopTitleLengthTopic && chopTarget === true) {
-						len = chopTitleLengthTopic;
-						curr = len;
-						prev = 0;
-						input = targetName;
-						output = [];
-						while(input[curr]) {
-						  if(input[curr++] == ' ') {
-							output.push(input.substring(prev,curr));
-							prev = curr;
-							curr += len;
-						  }
-						}
-						output.push(input.substr(prev)); 
-						targetName = output[0] + '...';								
-					} 					
-				}
-
-				// source on hover text
-				// set text anchor if even or odd
-				if ((j.source.attributes.y % 2) == 1) {
-					hori = horizontal(j.source.attributes.x) + 15;
-					vert = projectVertical(j.source.attributes.y) - horiCenterProject;
-					text = sourceName;
-					hoverTextProjectsRight.push({id: j.source.cid, text: text, hori: hori, vert: vert, mo: moSource}); 
-				} else {
-					hori = horizontal(j.source.attributes.x) - (15 + wrapWidthProjects);
-					vert = projectVertical(j.source.attributes.y) - horiCenterProject;
-					text = sourceName;
-					hoverTextProjectsLeft.push({id: j.source.cid, text: text, hori: hori, vert: vert, mo: moSource}); 
-				}
-
-				// target on hover text
-				if (j.target.attributes.flag == 'faculty') {
-					hori = horizontal(j.target.attributes.x) - (15 + wrapWidthFacTopics);
-					vert = facultyVertical(j.target.attributes.y) - horiCenterFacTopic;
-					text = targetName;
-					hoverTextFaculty.push({id: j.target.cid, text: text, hori: hori, vert: vert, mo: moTarget});
-				} else {
-					hori = horizontal(j.target.attributes.x) + 15;
-					vert = topicVertical(j.target.attributes.y) - horiCenterFacTopic;
-					text = targetName;
-					hoverTextTopics.push({id: j.target.cid, text: text, hori: hori, vert: vert, mo: moTarget}); 
-				}
-
 
 			}
-		});
 
-		d3.select(this).classed("activeMouseover", true).attr("r", 10);
+
+		});
 
 		// remove duplicates from hover text
 		hoverTextProjectsRight = _.uniq(hoverTextProjectsRight, function(n){
@@ -420,13 +553,17 @@ hive: function(){
 
     // Clear any highlighted nodes or links.
     function mouseout() {
-      svg.selectAll(".active").classed("active", false);
-      svg.selectAll(".activeMouseover").classed("activeMouseover", false);
-      svg.selectAll(".node").attr("r", 3);
-      svg.selectAll(".hoverTextProjectsRight").remove();
-      svg.selectAll(".hoverTextProjectsLeft").remove();
-      svg.selectAll(".hoverTextFaculty").remove();
-      svg.selectAll(".hoverTextTopics").remove();
+		svg.selectAll(".active").classed("active", false);
+		svg.selectAll(".link").classed("active", true);
+		svg.selectAll(".activeMouseover").classed("activeMouseover", false);
+		svg.selectAll(".node").attr("r", 3);
+		svg.selectAll(".hoverTextProjectsRight").remove();
+		svg.selectAll(".hoverTextProjectsLeft").remove();
+		svg.selectAll(".hoverTextFaculty").remove();
+		svg.selectAll(".hoverTextTopics").remove();
+		// show normal faculty and topic text
+		$(".textNames").show();
+
     }
 
 
