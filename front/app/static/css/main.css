@@ -6233,7 +6233,7 @@ header {
   font-weight: 300;
 }
 #controls {
-  margin-left: 385px;
+  margin-left: 448px;
   padding-top: 2px;
   height: 40px;
 }
@@ -6334,6 +6334,9 @@ header {
 }
 .link {
   fill: none;
+}
+.rect {
+  fill: #ffffff;
 }
 .link.active {
   stroke: #ff6600;

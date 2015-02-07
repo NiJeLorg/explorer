@@ -69,6 +69,20 @@ var Projects = Related.extend({
 			return n.id;
 		});
 
+		// sort faculty and topics nodes so they're in alphabetical order
+		uniqueFacultyNodes = _.sortBy(uniqueFacultyNodes, function(n) {
+			var name = n.attributes.full_name.trim();
+			var name_split = name.split(' ');
+			return name_split[name_split.length-1];
+		});
+
+		uniqueTopicsNodes = _.sortBy(uniqueTopicsNodes, function(n) {
+			return n.attributes.name;
+		});
+
+		console.log("CHECK out this node", uniqueTopicsNodes);
+
+
 		// iterate though faculty nodes and add in x, y coordinates and add to nodes
 		uniqueFacultyNodes.forEach(function(n, i) {
 			n.attributes.flag = 'faculty';

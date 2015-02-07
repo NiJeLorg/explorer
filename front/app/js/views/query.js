@@ -77,7 +77,7 @@ var QueryView = BB.View.extend({
 	createDefaultMenus: function(){
 		console.log("creating default menus");
 		// choose one collection randomly
-		var keys = ['facultys', 'projects', 'topics', 'locations',  'works'];
+		var keys = ['facultys', 'projects', 'topics', 'locations'];
 		var randomChoiceKey  = this.randomChoice(keys);
 		var randomChoice = Data.collections.get(randomChoiceKey);
 		// get the default collections
