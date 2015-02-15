@@ -53,7 +53,7 @@ registerHBHelpers: function(){
 		for(var i=0, l=attributes.work_types.length; i<l; i++) {
 			// add item name if the type is the type passed to the helper
 			if (attributes.work_types[i].attributes.name == type) {
-				output = output + '<div class="col-sm-12"><p class="modal-list-title">' +  attributes.title + '</p></div>';
+				output = output + '<div class="col-sm-12"><h4>' +  attributes.title + '</h4></div>';
 				
 				// add publication info if a publication
 				if (attributes.publicationinfo) {
@@ -121,27 +121,27 @@ registerHBHelpers: function(){
 				}
 				
 				if (attributes.faculty.length > 0) {
-					output = output + '<div class="col-sm-12"><p class="modal-list-first-element"><strong>Faculty</strong></p><ul>';
+					output = output + '<div class="col-sm-12"><p class="modal-list-first-element"><strong>Faculty</strong></p><p>';
 
 					for(var e=0, p=attributes.faculty.length; e<p; e++) {
 						if (attributes.faculty[e].attributes.home_page !== '') {
-							output = output + '<li><a href="' + attributes.faculty[e].attributes.home_page + '">' + attributes.faculty[e].attributes.full_name + '</a></li>';
+							output = output + '<a href="' + attributes.faculty[e].attributes.home_page + '" target="_blank">' + attributes.faculty[e].attributes.full_name + '</a><br />';
 						} else {
-							output = output + '<li>' + attributes.faculty[e].attributes.full_name + '</li>';
+							output = output + '' + attributes.faculty[e].attributes.full_name + '<br />';
 						}
 						
 					}					
-					output = output + '</ul></div>';
+					output = output + '</p></div>';
 				}
 								
 				if (attributes.topics.length > 0) {
-					output = output + '<div class="col-sm-12"><p class="modal-list-first-element"><strong>Topics</strong></p><ul>';
+					output = output + '<div class="col-sm-12"><p class="modal-list-first-element"><strong>Topics</strong></p><p>';
 
 					for(var h=0, m=attributes.topics.length; h<m; h++) {
-						output = output + '<li>' + attributes.topics[h].attributes.name + '</li>';
+						output = output + attributes.topics[h].attributes.name + '<br />';
 					}
 					
-					output = output + '</ul></div>';
+					output = output + '</p></div>';
 				}
 				
 				output = output + '<div class="buffer"></div>';						

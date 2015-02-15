@@ -4,14 +4,14 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="objectCountryModalLabel{{id}}">{{attributes.name}}</h4>
+				<h3 class="modal-title" id="objectCountryModalLabel{{id}}">{{attributes.name}}</h3>
 			</div>
 			<div class="modal-body">
 				<div class="container modal-container-width">
 					{{#if attributes.works}}
 						{{#countryListTitle attributes.works 'Projects'}}
 							<div class="row">
-								<div class="col-sm-12"><h4>Projects</h4></div>
+								<div class="col-sm-12"><h3>Projects</h3></div>
 						        {{#each attributes.works}}
 									{{#countryListContent attributes ../attributes.full_name 'Projects'}}
 									{{/countryListContent}}
@@ -22,7 +22,7 @@
 					
 						{{#countryListTitle attributes.works 'Journal Article'}}
 							<div class="row">
-								<div class="col-sm-12"><h4>Selected Journal Articles</h4></div>
+								<div class="col-sm-12"><h3>Selected Journal Articles</h3></div>
 						        {{#each attributes.works}}
 									{{#countryListContent attributes ../attributes.full_name 'Journal Article'}}
 									{{/countryListContent}}
@@ -33,7 +33,7 @@
 						
 						{{#countryListTitle attributes.works 'Book'}}
 							<div class="row">
-								<div class="col-sm-12"><h4>Books</h4></div>
+								<div class="col-sm-12"><h3>Books</h3></div>
 						        {{#each attributes.works}}
 									{{#countryListContent attributes ../attributes.full_name 'Book'}}
 									{{/countryListContent}}
@@ -44,7 +44,7 @@
 
 						{{#countryListTitle attributes.works 'Article'}}
 							<div class="row">
-								<div class="col-sm-12"><h4>Other Selected Articles</h4></div>
+								<div class="col-sm-12"><h3>Other Selected Articles</h3></div>
 						        {{#each attributes.works}}
 									{{#countryListContent attributes ../attributes.full_name 'Article'}}
 									{{/countryListContent}}
@@ -55,7 +55,7 @@
 
 						{{#countryListTitle attributes.works 'Publication'}}
 							<div class="row">
-								<div class="col-sm-12"><h4>Other Selected Publications</h4></div>
+								<div class="col-sm-12"><h3>Other Selected Publications</h3></div>
 						        {{#each attributes.works}}
 									{{#countryListContent attributes ../attributes.full_name 'Publication'}}
 									{{/countryListContent}}

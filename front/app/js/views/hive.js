@@ -149,8 +149,7 @@ hive: function(){
 	    .on('click', function(d, i){
 	    	if (d.attributes.flag == 'faculty') {
 				var url = d.attributes.home_page;
-		        $(location).attr('href', url);
-		        window.location = url;
+		        window.open(url, '_blank');
 			} else {
 				me.showModal(d.cid); 				
 			}
@@ -242,8 +241,7 @@ hive: function(){
 	    .on('click', function(d, i){
 	    	if (d.attributes.flag == 'faculty') {
 				var url = d.attributes.home_page;
-		        $(location).attr('href', url);
-		        window.location = url;
+		        window.open(url, '_blank');
 			} else {
 				me.showModal(d.cid); 				
 			}
@@ -355,7 +353,7 @@ hive: function(){
 				mo = true;
 				chop = false;
 				svg.select(selector).classed("activeMouseover", true).attr("r", 10);
-				horiCenterProject = 16;
+				horiCenterProject = 12;
 				horiCenterFacTopic = 12;
 			} else {
 				mo = false;
