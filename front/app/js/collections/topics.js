@@ -3,7 +3,7 @@ var Topic = require('../models/topic');
 
 var Topics = Related.extend({
 	key: 'topics',
-	menuName: 'Topics',
+	menuName: 'TOPICS',
 	comparator: 'name',
 
 	initialize: function(){

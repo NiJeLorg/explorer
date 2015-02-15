@@ -89,8 +89,7 @@ chord: function(){
 			var node = data.nodes[i];
 			if (data.relationKey == 'current_interests') {				
 				var url = node.get("home_page");
-		        $(location).attr('href', url);
-		        window.location = url;
+		        window.open(url, '_blank');
 			} else {
 				me.showModal(node.cid); 				
 			}

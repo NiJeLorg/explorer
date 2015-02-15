@@ -4,7 +4,7 @@ var Project = require('../models/project');
 
 var Projects = Related.extend({
 
-	menuName: 'Projects',
+	menuName: 'PROJECTS',
 	key: 'projects',
 	comparator: 'title',
 	model: Project,
@@ -36,6 +36,12 @@ var Projects = Related.extend({
 		data.max = [];
 		var facultyNodes = [];
 		var topicsNodes = [];
+
+		// ensure nodes are sorted by project title
+		this.models = _.sortBy(this.models, function(n) {
+			return n.attributes.title;
+		});
+
 
 		// loop through project models and pull faculty and topic nodes
 		this.models.forEach(function(m, i){
@@ -79,9 +85,6 @@ var Projects = Related.extend({
 		uniqueTopicsNodes = _.sortBy(uniqueTopicsNodes, function(n) {
 			return n.attributes.name;
 		});
-
-		console.log("CHECK out this node", uniqueTopicsNodes);
-
 
 		// iterate though faculty nodes and add in x, y coordinates and add to nodes
 		uniqueFacultyNodes.forEach(function(n, i) {

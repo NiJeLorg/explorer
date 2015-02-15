@@ -6232,9 +6232,13 @@ header {
 .header-panel.feedback-button {
   font-weight: 300;
 }
+.header-panel.btn-dropdown {
+  border-top: 0px;
+  border-left: 0px;
+  border-bottom: 1px solid #000;
+  padding-top: 6px;
+}
 #controls {
-  margin-left: 448px;
-  padding-top: 2px;
   height: 40px;
 }
 .dropdown-menu {
@@ -6267,8 +6271,8 @@ header {
   color: #0785ff;
 }
 /* Bootstrap modal overrides */
-.modal-85 {
-  width: 85%;
+.modal-45 {
+  width: 45%;
 }
 .modal-99 {
   width: 99%;
@@ -6299,21 +6303,16 @@ header {
 }
 .modal-list-element {
   margin-bottom: 5px;
-  margin-left: 10px;
-}
-.modal-list-title {
-  margin: 2px 10px;
-  font-weight: 300;
-  font-size: 18px;
+  margin-left: 0px;
 }
 .modal-fine-print {
-  margin: 0px 10px;
+  margin: 2px 0px;
   color: #666666;
   font-size: 12px;
 }
 .modal-list-first-element {
   margin-bottom: 0px;
-  margin-left: 15px;
+  margin-left: 0px;
 }
 .close {
   color: #ffffff;
@@ -6351,17 +6350,8 @@ header {
 .node:hover {
   cursor: pointer;
 }
-.node.active {
-  fill: #eeeeee;
-  stroke: #000000;
-}
-.node.activeMouseover {
-  fill: #000000;
-  stroke: #000000;
-}
 .hoverBigBold {
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 16px;
 }
 .hoverNormal {
   font-size: 10.5px;

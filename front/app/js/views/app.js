@@ -47,9 +47,6 @@ var AppView = BB.View.extend({
 					.style("color", "black");
 				states.isOpen = true;
 			}
-			panel.click(function(event){
-			    event.stopPropagation();
-			});
 		};
 	}, 
 	
