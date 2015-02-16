@@ -8,7 +8,7 @@ function lastName(m){
 
 var Facultys = Related.extend({
 	key: 'facultys',
-	menuName: 'Faculty',
+	menuName: 'FACULTY',
 	comparator: lastName,
 
 	initialize: function(){

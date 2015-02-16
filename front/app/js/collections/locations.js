@@ -4,7 +4,7 @@ var Location = require('../models/location');
 var Locations = Related.extend({
 
     key: 'locations',
-	menuName: 'Countries',
+	menuName: 'COUNTRIES',
 	comparator: 'name',
 
 	initialize: function(){
