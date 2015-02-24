@@ -4,11 +4,16 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h3 class="modal-title" id="objectCountryModalLabel{{id}}">{{attributes.works}}</h3>
+				<h3 class="modal-title" id="objectCountryModalLabel{{id}}">{{attributes.name}}</h3>
 			</div>
 			<div class="modal-body">
 				<div class="container modal-container-width">
 					{{#if attributes.works}}
+				        {{#each attributes.works}}
+				        	{{attributes.title}}<br />
+				        {{/each}}
+
+
 						{{#countryListTitle attributes.works 'Projects'}}
 							<div class="row">
 								<div class="col-sm-12"><h3>Projects</h3></div>
