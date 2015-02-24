@@ -9,7 +9,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>DUSP Explorer</title>
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="static/favicon.ico" />
         <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300,700,400|Roboto:400,300,700,900,500,100,400italic' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="/static/css/main.css">
@@ -22,21 +22,44 @@
         <![endif]-->
         <header>
           <a href="http://www.mit.edu/" title="Massachusetts Institute of Technology" target="_blank"> <div class="header-panel"> MIT </div> </a>
+          <a href="http://sap.mit.edu/" title="MIT School of Architecture + Planning" target="_blank"> <div class="header-panel"> SA+P </div> </a>
           <a href="http://dusp.mit.edu/" title="MIT Department of Urban Studies and Planning" target="_blank"> <div class="header-panel"> DUSP </div> </a>
           <a href="/"> <div class="header-panel"> EXPLORER </div> </a>
           <a href="#" title="More information about this page"> <div class="header-panel info-button"> INFO </div> </a>
+          <a href="#" title="Please provide feedback on this site"> <div class="header-panel feedback-button"> FEEDBACK </div> </a>
           <div id="controls">
           </div>
         </header>
-          <div id="info">
-            {% textbit "info" %}
+          <div id="info">          		
+          </div>
+          <div id="feedback">
+            <div class="col-sm-6 col-sm-offset-3">
+              <form action="/feedback_form_submit/" method="post" id="feedback-form">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="Name">Name</label>
+                  <input type="text" class="form-control" id="Name" placeholder="Name">
+                </div>
+                <div class="form-group">
+                  <label for="Email">Email</label>
+                  <input type="email" class="form-control" id="Email" placeholder="Email">
+                </div>
+                <div class="form-group">
+                  <input type="Address" class="form-control" id="Address" placeholder="Address">
+                </div>
+                <div class="form-group">
+                  <label for="Comments">Comments</label>
+                  <textarea class="form-control" id="Comments" rows="3" placeholder="Comments"></textarea>
+                </div>
+                <button type="submit" class="btn btn-default pull-right">Submit</button>
+              </form>
+            </div>              
           </div>
           <div id="chart">
           </div>
+		  <div id="modals">
+		  </div>
     </div>
-    <footer>
-      {% textbit "footer" %}
-    </footer>
         <script type="text/javascript" src="/static/data/world.js"></script>
         <script type="text/javascript">
           var API_ROOT = '{{api_root}}';
@@ -44,7 +67,9 @@
           {% if jsons %}
 {% include 'json_data.js' %}
           {% endif %}
+		  
         </script>
-        <script  src="/static/js/bundle.js"></script>
+        <script type="text/javascript" src="/static/js/bundle.js"></script>
+		
 </body>
 </html>
