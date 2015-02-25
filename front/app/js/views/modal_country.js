@@ -149,7 +149,7 @@ registerHBHelpers: function(){
 			}
 		}
 				
-		return output;
+		return new Handlebars.SafeString(output);
 		
 	});
 	
