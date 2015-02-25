@@ -35,10 +35,12 @@ registerHBHelpers: function(){
 		var yes = 0;
 		
 		$.each(works, function(key, value) {
+			console.log("countryListTitle work_types", value.attributes.work_types[0].attributes.name);
 			if (value.attributes.work_types[0].attributes.name == needle) {
 				yes = 1;
 			}
 		});
+
 		
 		if(yes == 1) {
 			return options.fn(this);
