@@ -30,7 +30,8 @@ render: function(){
 
 registerHBHelpers: function(){
 	Handlebars.registerHelper('countryListTitle', function(works, needle, options) {
-		console.log("countryListTitle runs");
+		console.log("countryListTitle works", works);
+		console.log("countryListTitle needle", needle);
 		var yes = 0;
 		
 		$.each(works, function(key, value) {
