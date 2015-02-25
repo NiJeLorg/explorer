@@ -30,6 +30,7 @@ render: function(){
 
 registerHBHelpers: function(){
 	Handlebars.registerHelper('countryListTitle', function(works, needle, options) {
+		console.log("countryListTitle runs");
 		var yes = 0;
 		
 		$.each(works, function(key, value) {
@@ -46,6 +47,7 @@ registerHBHelpers: function(){
 	});
 	
 	Handlebars.registerHelper('countryListContent', function(attributes, full_name, type, options) {
+		console.log("countryListContent runs");
 		var output = '';
 		var periodicals = '';
 		var publishers = '';
