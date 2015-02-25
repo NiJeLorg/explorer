@@ -48,7 +48,7 @@ registerHBHelpers: function(){
 		var output = '';
 		var periodicals = '';
 		var publishers = '';
-				
+
 		for(var i=0, l=attributes.work_types.length; i<l; i++) {
 			// add item name if the type is the type passed to the helper
 			if (attributes.work_types[i].attributes.name == type) {
