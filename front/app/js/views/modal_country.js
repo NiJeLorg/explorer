@@ -41,7 +41,7 @@ registerHBHelpers: function(){
 			}
 		});
 
-		
+		console.log(yes);
 		if(yes == 1) {
 			return options.fn(this);
 		} else {
