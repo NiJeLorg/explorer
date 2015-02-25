@@ -166,9 +166,7 @@ registerHBHelpers: function(){
 								
 			}
 		}
-			
-		console.log("list content is working!", output);
-	
+				
 		return output;
 		
 	});
