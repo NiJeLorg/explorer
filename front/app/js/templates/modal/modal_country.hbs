@@ -10,12 +10,12 @@
 				<div class="container modal-container-width">
 					{{#if attributes.works}}
 						{{ attributes.works }}
-						{{#countryListTitle attributes.works 'Projects'}}
+						{{#countryListTitle attributes.works 'Project'}}
 							<p>Anything printed here?</p>
 							<div class="row">
 								<div class="col-sm-12"><h3>Projects</h3></div>
 						        {{#each attributes.works}}
-									{{#countryListContent attributes ../attributes.full_name 'Projects'}}
+									{{#countryListContent attributes ../attributes.full_name 'Project'}}
 									{{/countryListContent}}
 						        {{/each}}
 							</div>							

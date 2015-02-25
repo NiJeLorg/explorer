@@ -52,11 +52,11 @@
 					{{/if}}
 					
 					{{#if attributes.works}}
-						{{#listTitle attributes.works 'Projects'}}
+						{{#listTitle attributes.works 'Project'}}
 							<div class="row">
 								<div class="col-sm-12"><h3>Projects</h3></div>
 						        {{#each attributes.works}}
-									{{#listContent attributes ../attributes.full_name 'Projects'}}
+									{{#listContent attributes ../attributes.full_name 'Project'}}
 									{{/listContent}}
 						        {{/each}}
 							</div>							
