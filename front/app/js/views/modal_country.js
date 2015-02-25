@@ -30,12 +30,9 @@ render: function(){
 
 registerHBHelpers: function(){
 	Handlebars.registerHelper('countryListTitle', function(works, needle, options) {
-		console.log("countryListTitle works", works);
-		console.log("countryListTitle needle", needle);
 		var yes = 0;
 		
 		$.each(works, function(key, value) {
-			console.log("countryListTitle work_types", value.attributes.work_types[0].attributes.name);
 			if (value.attributes.work_types[0].attributes.name == needle) {
 				yes = 1;
 			}
@@ -50,7 +47,6 @@ registerHBHelpers: function(){
 	});
 	
 	Handlebars.registerHelper('countryListContent', function(attributes, full_name, type, options) {
-		console.log("countryListContent runs");
 		var output = '';
 		var periodicals = '';
 		var publishers = '';
