@@ -149,7 +149,11 @@ registerHBHelpers: function(){
 			}
 		}
 				
+<<<<<<< HEAD
 		return new Handlebars.SafeString(output);
+=======
+		return output;
+>>>>>>> origin/master
 		
 	});
 	

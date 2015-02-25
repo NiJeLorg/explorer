@@ -1,6 +1,7 @@
 django==1.6.2
 psycopg2
 south
+<<<<<<< HEAD
 django-polymorphic
 django-extensions
 django-sekizai
@@ -8,8 +9,17 @@ django-reversion
 django-grappelli==2.5.2
 django-guardian
 djangorestframework
+=======
+django-polymorphic==0.6
+django-extensions==1.4.4
+django-sekizai==0.7
+django-reversion==1.8.4
+django-grappelli==2.5.2
+django-guardian==1.2.4
+djangorestframework==2.4.3
+>>>>>>> origin/master
 django-cors-headers
-markdown
-markdown2
-django-filter
+markdown==2.5.1
+markdown2==2.3.0
+django-filter==0.8
 Pillow

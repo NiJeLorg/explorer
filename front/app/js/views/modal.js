@@ -48,7 +48,11 @@ registerHBHelpers: function(){
 		var output = '';
 		var periodicals = '';
 		var publishers = '';
+<<<<<<< HEAD
 				
+=======
+
+>>>>>>> origin/master
 		for(var i=0, l=attributes.work_types.length; i<l; i++) {
 			// add item name if the type is the type passed to the helper
 			if (attributes.work_types[i].attributes.name == type) {
@@ -167,7 +171,11 @@ registerHBHelpers: function(){
 			}
 		}
 				
+<<<<<<< HEAD
 		return new Handlebars.SafeString(output);
+=======
+		return output;
+>>>>>>> origin/master
 		
 	});
 
@@ -180,7 +188,11 @@ registerHBHelpers: function(){
 			output = output + attributes.full_name + '<br />';
 		}
 						
+<<<<<<< HEAD
 		return new Handlebars.SafeString(output);
+=======
+		return output;
+>>>>>>> origin/master
 		
 	});
 	
