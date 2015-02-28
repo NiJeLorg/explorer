@@ -105,35 +105,23 @@ var Projects = Related.extend({
 
 		// loop through projects and create links array with sources and targets
 		this.models.forEach(function(m, i){
+			console.log("project model!", m);
 
-			var facultySpans = m.getSpan('faculty', 'projects');
-			facultySpans.forEach(function(s){
-				var uniqueFaculty = _.uniq(s.bridges, function(n){
-					return n.id;
-				});
-				uniqueFaculty.forEach(function(u){
-					var link = {};
-					link.target = u;
-					link.source = m;
-					data.links.push(link);
-				});
-
+			var facultyNodes = m.getCommonRelations(m, 'faculty');
+			facultyNodes.forEach(function(s){
+				console.log("relations!",s);
+				var link = {};
+				link.target = s;
+				link.source = m;
+				data.links.push(link);
 			});
 
-			var topicSpans = m.getSpan('topics', 'projects');
-			topicSpans.forEach(function(s){
+			var topicsNodes = m.getCommonRelations(m, 'topics');
+			topicsNodes.forEach(function(s){
 				var link = {};
-				// bridges hold project faculty; get unique list of faculty and add ean individually as links and sources
-				var uniqueTopics = _.uniq(s.bridges, function(n){
-					return n.id;
-				});
-				uniqueTopics.forEach(function(u){
-					var link = {};
-					link.target = u;
-					link.source = m;
-					data.links.push(link);
-				});
-
+				link.target = s;
+				link.source = m;
+				data.links.push(link);
 			});
 
 

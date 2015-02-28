@@ -323,7 +323,7 @@ hive: function(){
 				} 
 			});
 
-			if (nodeCount > 1) {
+			if (nodeCount >= 1) {
 				return true;
 			} else {
 				return false;
