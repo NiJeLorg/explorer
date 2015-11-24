@@ -63,6 +63,7 @@ var QueryView = BB.View.extend({
 		return arr[Math.floor(Math.random()*arr.length)];
 	},
 
+
 	handleMenuChoice: function(item, menu){
 		if ( menu === this.menus[0]){
 			//hide all modals
@@ -85,6 +86,7 @@ var QueryView = BB.View.extend({
 		var choices = keys.map(function(key){ return Data.collections.get(key); });
 		// add a menu with the item chosen, the possible itemsm and a handler for
 		// the choice
+		console.log(choices);
 		this.addMenu({
 			choice: randomChoice,
 			menuItems: choices,

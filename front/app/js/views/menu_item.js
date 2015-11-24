@@ -2,7 +2,7 @@ var BB = require('backbone');
 var template = require('../templates/menu_item.hbs');
 
 var MenuItemView = BB.View.extend({
-	el: 'li',
+	el: 'a',
 
 	events: { 'click': 'select' },
 

@@ -24,7 +24,7 @@ var MenuView = BB.View.extend({
 		this.left = left;
 		this.right = right;
 		this.render();
-		this.dropdown = this.$el.find("ul");
+		this.dropdown = this.$el.find("div");
 		this.buildMenu();
 	},
 
@@ -53,6 +53,7 @@ var MenuView = BB.View.extend({
 		} else {
 			// initialize a new menu item view
 			var menuItem = new MenuItemView(item, this);
+			console.log("MENU ITEM", menuItem);
 			this.map.set(item.menuName, menuItem);
 			this.dropdown.append(menuItem.$el);
 			if( item == this.choice ) {
